@@ -12,7 +12,8 @@ cp .env.example .env        # set PRIVATE_KEY; get test USDC at https://faucet.c
 ```
 
 `deploy.sh` checks the wallet has USDC for gas, deploys, verifies on the explorer, and prints
-ready-to-run commands to approve and tip. The example contract takes tips in USDC and sends them
+ready-to-run commands to approve and tip. Settings come from `.env`; anything you set on the
+command line wins. Needs [Foundry](https://getfoundry.sh). The example contract takes tips in USDC and sends them
 to `OWNER` (default: the deployer, so a test tip comes back to you).
 
 Mainnet: `NETWORK=arc CONFIRM_MAINNET=1 ./deploy.sh` (spends real USDC; deploys cost cents).
@@ -62,8 +63,11 @@ fork, `arc-anvil`, reproduces Arc behavior locally; plain `anvil` doesn't.
   `0xf6317aa57d693aaef8490909f657adf7fbba24b975041de06f528a07afc32edb`).
 - Earlier manual run, first-time verification "Pass - Verified":
   `0x53938CC7E0491CBEB1696E9f566C01Afa8cF262c`.
+- The printed approve and tip commands, run exactly as printed with the key only in `.env`:
+  both succeeded.
 - `deploy.sh` stops with a clear message when `PRIVATE_KEY` is missing, the wallet has no USDC,
-  or `NETWORK=arc` without `CONFIRM_MAINNET=1`.
+  `NETWORK` is misspelled, or `NETWORK=arc` is given (in `.env` or on the command line)
+  without `CONFIRM_MAINNET=1`.
 
 Sources: [docs.arc.io](https://docs.arc.io) (connect-to-arc, gas-and-fees, evm-differences,
 stablecoin-native-model, deploy-on-arc), [mainnet launch](https://www.arc.io/blog/arc-mainnet-goes-live-on-september-16-2026).

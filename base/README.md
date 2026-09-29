@@ -39,13 +39,14 @@ const DATA_SUFFIX = Attribution.toDataSuffix({ codes: ['bc_yourcode'] }); // nev
 ## 3. Check it
 
 ```sh
-cd base/example && npm install
-cp .env.example .env     # set BUILDER_CODE, CHAIN, PRIVATE_KEY
+cd base/example && npm install      # Node >= 20.12
+cp .env.example .env     # set BUILDER_CODE, CHAIN, PRIVATE_KEY (shell values win over .env)
 npm run send             # sends a 0-value tx to yourself with the code, reads it back
 npm run check -- 0x<tx>  # any tx on CHAIN: "Builder Code(s): bc_..." or "No Builder Code"
 ```
 
-Only Base mainnet (`CHAIN=base`) counts for attribution; Base doesn't say whether testnet
+Codes are lowercase letters, digits, and `_`. Sending with `CHAIN=base` costs real ETH and
+needs `CONFIRM_MAINNET=1`. Only Base mainnet counts for attribution; Base doesn't say whether testnet
 activity shows on base.dev. On base.dev, attribution counts rise under Onchain activity.
 
 ## x402 payments
@@ -59,8 +60,9 @@ Coinbase's CDP facilitator does; **Circle's Facilitator Service doesn't**.
 - `npm run send` via `.env` (on Arc testnet, where the test wallet had gas; the encoding is the
   same on every EVM chain): tx `0x5c20cc4425252920f1eba551bd65c610fc4b9e6c3ea3b29af9b669ed7a72eef4`
   succeeded and decodes to `bc_kittest`. `npm run check` finds it.
-- Clear errors for: no `CHAIN`/`BUILDER_CODE`/`PRIVATE_KEY`, an unknown chain, a wallet with no
-  gas, a missing hash, and a hash on the wrong chain.
+- Clear errors for: no `.env`, no `CHAIN`/`BUILDER_CODE`/`PRIVATE_KEY`, a placeholder or
+  invalid code, an unknown chain, `CHAIN=base` without `CONFIRM_MAINNET=1`, a wallet with no
+  gas, a missing hash, and a hash on the wrong chain. Works when run from any directory.
 - Codes used were placeholders, not registered Builder Codes.
 
 Sources: [Builder Codes](https://docs.base.org/specifications/builder-codes/overview)

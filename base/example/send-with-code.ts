@@ -5,9 +5,10 @@
 import { Attribution } from 'ox/erc8021';
 import { createPublicClient, createWalletClient, http } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
-import { getChain, getDataSuffix, getPrivateKey } from './env.ts';
+import { confirmMainnet, getChain, getDataSuffix, getPrivateKey } from './env.ts';
 
 const chain = getChain();
+confirmMainnet(chain.name);
 const { code, suffix } = getDataSuffix();
 const account = privateKeyToAccount(getPrivateKey());
 
