@@ -5,6 +5,5 @@ solc = "0.8.30"
 # Arc targets the Osaka fork; prague is a safe subset every current solc supports.
 evm_version = "prague"
 
-[rpc_endpoints]
-arc = "https://rpc.mainnet.arc.io"
-arc_testnet = "https://rpc.testnet.arc.io"
+[lint]
+lint_on_build = false
