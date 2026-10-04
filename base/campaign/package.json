@@ -1,0 +1,22 @@
+{
+  "name": "earnkit-base-campaign-starter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "tsx --test attribution.test.ts",
+    "deploy": "tsx deploy.ts",
+    "check-in": "tsx check-in.ts",
+    "sign-entry": "tsx sign-entry.ts"
+  },
+  "dependencies": {
+    "ox": "^1.8.5",
+    "viem": "^2.45.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.12"
+  }
+}
