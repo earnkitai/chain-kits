@@ -30,14 +30,23 @@ USDC on Arc is `0x3600000000000000000000000000000000000000` on mainnet and testn
 decimals on its ERC-20 interface (the gas token side uses 18). See the
 [Arc kit](https://github.com/earnkitai/chain-kits/tree/main/arc) for Arc's traps. The jar never touches `msg.value` and never holds funds.
 
+- Tip only through `tip()`. USDC or anything else sent straight to the jar's address is stuck
+  for good: there is no sweep, by design.
+- The owner can't be changed. If the owner wallet is lost, deploy a new jar.
+
 ## The page
 
 - Reads the jar over Arc's public RPC (it answers sandboxed pages): owner, totals, and the
   feature (recent notes from `Tipped` logs, or a goal bar).
+- Notes show only from tips of at least 1 USDC (or `minTip` if higher), so the page can't be
+  covered in text for fractions of a cent. Smaller tips still count in the totals.
 - With a browser wallet it switches to Arc, approves the exact amount, and tips.
-- With no wallet, or one that can't connect inside the host's sandbox, it shows
-  "Tip from the explorer" links with the exact values.
-- Settings live in `site/config.js` (a script, not JSON: a sandboxed page can't fetch its own files).
+- With no wallet, or one that can't connect inside the host's sandbox, it shows "Tip from the
+  explorer": the explorer URLs, the jar and USDC addresses and the amounts as text to copy into a
+  new tab. It never opens links itself: on EarnKit hosting a page it opens inherits the sandbox,
+  where the explorer can't connect a wallet.
+- Settings live in `site/config.js` (a script, not JSON: a sandboxed page can't fetch its own
+  files). Pure helpers live in `site/lib.js`, tested by `scripts/page.test.mjs`.
 
 ## Deploy it yourself (optional)
 
@@ -53,12 +62,17 @@ Keep the key in your shell or `.env` (gitignored), never in a file you commit.
 
 ## Tested
 
-- `forge test`: 9 passed. `bash scripts/e2e.sh`: passed (forge 1.8.1, Node 24, 2026-10-11).
+- `forge test`: 9 passed. `node --test scripts/page.test.mjs`: 4 passed. `bash scripts/e2e.sh`:
+  passed (forge 1.8.1, Node 24, 2026-10-11).
 - The artifact and `site.zip` pass the EarnKit app's own `deployRefusal`, `runtimeRefusal`,
   `zipProblems`, `abuseFlags` and `usesStorage` (initcode 5,341 bytes, runtime 3,464 bytes).
-- The page under the host's exact CSP sandbox (origin `null`) in headless Chromium: totals and
-  notes read from anvil; a tip through an injected wallet landed; a wallet that fails to connect
-  falls back to the explorer links.
+- The page served under EarnKit's exact host CSP (origin `null`) in headless Chromium, against
+  anvil:
+  - Totals and notes read. A dust tip's note stays hidden while it counts in the totals.
+  - A tip through a stand-in injected wallet landed. No real wallet extension was tested.
+  - A wallet that fails to connect shows "Tip from the explorer" as copyable text, with no links
+    that open from the page. Tapping a box selects or copies its text.
+  - Not tested: the explorer's own write pages with a wallet (that happens outside this page).
 - Fresh-agent runs (2026-10-11): a new agent session given only BUILD.md, the twist "tips for my
   podcast listeners" and a wallet went from `degit` to `E2E PASSED` with `--twisted` plus
   `artifact.json` in about 70 s (run 1) and 64 s (run 2, after fixes from run 1), with no errors

@@ -7,7 +7,7 @@
   "license": "MIT",
   "engines": { "node": ">=20" },
   "scripts": {
-    "test": "forge test",
+    "test": "forge test && node --test scripts/page.test.mjs",
     "e2e": "bash scripts/e2e.sh",
     "ready": "bash scripts/e2e.sh --twisted",
     "artifact": "node scripts/artifact.mjs",

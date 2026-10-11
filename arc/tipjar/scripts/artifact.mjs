@@ -12,6 +12,13 @@ const args = process.argv.slice(2);
 const owner = args[args.indexOf('--owner') + 1];
 if (!args.includes('--owner') || !/^0x[0-9a-fA-F]{40}$/.test(owner ?? '')) die('Pass --owner with the wallet the builder gave (0x and 40 hex characters).');
 const test = args.includes('--test');
+if (/^0x0{40}$/.test(owner)) die('The owner cannot be the zero address. Ask the builder for their wallet.');
+// A mixed-case address carries an EIP-55 checksum: a typo there would send every tip to a dead
+// wallet forever (the owner is immutable). Lowercase or uppercase input has no checksum to check.
+if (/[a-f]/.test(owner.slice(2)) && /[A-F]/.test(owner.slice(2))) {
+  const sum = execFileSync('cast', ['to-check-sum-address', owner]).toString().trim();
+  if (sum !== owner) die(`${owner} fails its checksum (expected ${sum}): check the wallet with the builder.`);
+}
 // Accounts 0 to 9 of the default test mnemonic used by anvil and Hardhat (public addresses).
 const TEST_WALLETS = [
   'f39fd6e51aad88f6f4ce6ab8827279cfffb92266', '70997970c51812dc3a010c7d01b50e0d17dc79c8', '3c44cdddb6a900fa2b585dd299e03d12fa4293bc',

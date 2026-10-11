@@ -47,8 +47,15 @@ export function loadTwist() {
   const feature = text('feature', 10, 160);
   if ((feature.match(/[.!?](\s|$)/g) ?? []).length > 1) throw new Error('twist.json "feature" must be one sentence');
   if (!['notes', 'goal', 'none'].includes(t.feature_kind)) throw new Error('twist.json "feature_kind" must be "notes", "goal" or "none"');
-  const goal = Number(t.goal_usdc ?? 0);
-  if (t.feature_kind === 'goal' && !(goal > 0)) throw new Error('twist.json "goal_usdc" must be above 0 when feature_kind is "goal"');
+  let goal = 0;
+  if (t.feature_kind === 'goal') {
+    let units = 0n;
+    try {
+      units = usdcUnits(String(t.goal_usdc ?? 0));
+    } catch {}
+    if (units <= 0n || units > 10n ** 15n) throw new Error('twist.json "goal_usdc" must be a USDC amount above 0 (at most 6 decimals) when feature_kind is "goal"');
+    goal = Number(t.goal_usdc);
+  }
   const minTip = usdcUnits(t.min_tip_usdc ?? '0');
   return { name, description, feature, feature_kind: t.feature_kind, goal_usdc: goal, minTip, wallet_connect: t.wallet_connect !== false };
 }

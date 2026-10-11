@@ -59,13 +59,14 @@ writeFileSync(join(ROOT, 'site/config.js'), `// Written by scripts/make-site.mjs
 
 // The zipped index.html carries the twist too, so the page reads right before app.js runs.
 const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+// Replacer functions, so a "$" in the twist is never read as a replacement pattern.
 const stamp = (html) =>
   html
-    .replace(/<title>[^<]*<\/title>/, `<title>${esc(twist.name)}</title>`)
-    .replace(/(<meta name="description" content=")[^"]*(")/, `$1${esc(twist.description)}$2`)
-    .replace(/(<h1 id="name"[^>]*>)[^<]*(<\/h1>)/, `$1${esc(twist.name)}$2`)
-    .replace(/(<p id="description"[^>]*>)[^<]*(<\/p>)/, `$1${esc(twist.description)}$2`)
-    .replace(/(<p id="feature"[^>]*>)[^<]*(<\/p>)/, `$1${esc(twist.feature)}$2`);
+    .replace(/<title>[^<]*<\/title>/, () => `<title>${esc(twist.name)}</title>`)
+    .replace(/(<meta name="description" content=")[^"]*(")/, (_, a, b) => a + esc(twist.description) + b)
+    .replace(/(<h1 id="name"[^>]*>)[^<]*(<\/h1>)/, (_, a, b) => a + esc(twist.name) + b)
+    .replace(/(<p id="description"[^>]*>)[^<]*(<\/p>)/, (_, a, b) => a + esc(twist.description) + b)
+    .replace(/(<p id="feature"[^>]*>)[^<]*(<\/p>)/, (_, a, b) => a + esc(twist.feature) + b);
 
 const files = [];
 const walk = (dir) => {

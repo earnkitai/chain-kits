@@ -40,24 +40,27 @@
     <input id="note" maxlength="280" placeholder="Add a note (optional)" aria-label="Note">
     <button id="tip-btn" type="submit" class="primary">Tip 5 USDC</button>
     <p id="status" class="status" role="status"></p>
+    <p id="tx" class="status" hidden></p>
   </form>
 
   <section id="explorer" class="explorer" hidden>
     <h2>Tip from the explorer</h2>
+    <p class="hint">Copy each link and open it in a new tab yourself, then connect your wallet there. Tap any box to copy it.</p>
     <ol>
-      <li><a id="ex-approve" target="_blank" rel="noopener noreferrer">Approve USDC</a>: spender <code id="ex-spender"></code>, amount <code class="ex-units"></code></li>
-      <li><a id="ex-tip" target="_blank" rel="noopener noreferrer">Tip</a>: amount <code class="ex-units"></code>, note <code id="ex-note"></code></li>
+      <li>Approve USDC: <code class="copy" id="ex-approve-url"></code> Spender <code class="copy" id="ex-spender"></code> Amount <code class="copy ex-units"></code></li>
+      <li>Tip: <code class="copy" id="ex-tip-url"></code> Amount <code class="copy ex-units"></code> Note <code class="copy" id="ex-note"></code></li>
     </ol>
-    <p class="hint">Amounts use 6 decimals: 1 USDC is 1000000. Connect your wallet on the explorer page.</p>
+    <p class="hint">Amounts use 6 decimals: 1 USDC is 1000000. USDC <code class="copy" id="ex-usdc"></code></p>
   </section>
 
   <footer>
-    <span>Goes to <a id="owner" target="_blank" rel="noopener noreferrer">-</a></span>
-    <a id="contract" target="_blank" rel="noopener noreferrer">Contract</a>
+    <span>Goes to <code class="copy" id="owner">-</code></span>
+    <span>Jar <code class="copy" id="contract">-</code></span>
     <a id="explorer-link" href="#explorer">Tip from the explorer</a>
   </footer>
 </main>
 <script src="config.js"></script>
+<script src="lib.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
