@@ -1,0 +1,17 @@
+{
+  "name": "earnkit-arc-tipjar-starter",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A USDC tip page on Arc: contract, static page, deploy and host checks.",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "forge test",
+    "e2e": "bash scripts/e2e.sh",
+    "ready": "bash scripts/e2e.sh --twisted",
+    "artifact": "node scripts/artifact.mjs",
+    "site": "node scripts/make-site.mjs",
+    "check": "node scripts/check.mjs"
+  }
+}

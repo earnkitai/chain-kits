@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tip Jar</title>
+<meta name="description" content="Send a tip in USDC on Arc.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="card">
+  <header>
+    <p class="chain"><span class="dot"></span><span id="chain">USDC on Arc</span></p>
+    <h1 id="name">Tip Jar</h1>
+    <p id="description" class="lead">Send a tip in USDC on Arc.</p>
+  </header>
+
+  <section class="stats" aria-label="Totals">
+    <div><strong id="total">-</strong><span>USDC tipped</span></div>
+    <div><strong id="count">-</strong><span>tips</span></div>
+    <div><strong id="tippers">-</strong><span>tippers</span></div>
+  </section>
+
+  <section id="feature-box" class="feature">
+    <p id="feature"></p>
+    <div id="goal" class="goal" hidden>
+      <div class="bar"><div id="goal-fill"></div></div>
+      <p id="goal-text"></p>
+    </div>
+    <ul id="notes" class="notes" hidden></ul>
+  </section>
+
+  <form id="tip-form" class="tip" autocomplete="off">
+    <div class="amounts" role="group" aria-label="Amount">
+      <button type="button" class="pill" data-amount="1">1</button>
+      <button type="button" class="pill on" data-amount="5">5</button>
+      <button type="button" class="pill" data-amount="10">10</button>
+      <label class="custom"><input id="amount" inputmode="decimal" value="5" aria-label="Amount in USDC"><span>USDC</span></label>
+    </div>
+    <input id="note" maxlength="280" placeholder="Add a note (optional)" aria-label="Note">
+    <button id="tip-btn" type="submit" class="primary">Tip 5 USDC</button>
+    <p id="status" class="status" role="status"></p>
+  </form>
+
+  <section id="explorer" class="explorer" hidden>
+    <h2>Tip from the explorer</h2>
+    <ol>
+      <li><a id="ex-approve" target="_blank" rel="noopener noreferrer">Approve USDC</a>: spender <code id="ex-spender"></code>, amount <code class="ex-units"></code></li>
+      <li><a id="ex-tip" target="_blank" rel="noopener noreferrer">Tip</a>: amount <code class="ex-units"></code>, note <code id="ex-note"></code></li>
+    </ol>
+    <p class="hint">Amounts use 6 decimals: 1 USDC is 1000000. Connect your wallet on the explorer page.</p>
+  </section>
+
+  <footer>
+    <span>Goes to <a id="owner" target="_blank" rel="noopener noreferrer">-</a></span>
+    <a id="contract" target="_blank" rel="noopener noreferrer">Contract</a>
+    <a id="explorer-link" href="#explorer">Tip from the explorer</a>
+  </footer>
+</main>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
