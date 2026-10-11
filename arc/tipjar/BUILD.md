@@ -16,7 +16,7 @@ No npm install. Never put a key in the repo or the page.
    | `feature` | one sentence, 10 to 160 characters | `A goal bar shows how close the next release fund is.` |
    | `feature_kind` | `notes` (recent tip notes), `goal` (progress bar) or `none` | `goal` |
    | `goal_usdc` | the goal in USDC when `feature_kind` is `goal`, else 0 | `500` |
-   | `min_tip_usdc` | smallest tip, `"0"` for any amount | `"1"` |
+   | `min_tip_usdc` | smallest tip in USDC, `"0"` for any amount; the page's smallest button is 1 | `"1"` |
    | `wallet_connect` | keep `true`; `false` shows only "Tip from the explorer" links | `true` |
 
    No addresses in the text slots. Pick the `feature_kind` that fits the twist and write
@@ -24,10 +24,11 @@ No npm install. Never put a key in the repo or the page.
 
 3. **Rename the kit.** Set `package.json` `name` and `description` to the project (`libfund`).
    Replace `README.md` from its heading down to "Agents: follow" with the project's name and
-   description. EarnKit treats a repo still named like the kit as the unchanged starter.
+   description; keep the rest. EarnKit treats a repo still named like the kit as the unchanged starter.
 
 4. **Optional: shape the page** in `site/` (copy, colors, layout). The name, description and
-   feature come from `twist.json`; you don't need to type them into the HTML. Keep it static. Keep the
+   feature come from `twist.json`: `make-site.mjs` writes them into the zipped page's title,
+   heading and text, so leave those in `index.html` as they are. Keep it static. Keep the
    `config.js` and `app.js` script tags. No `localStorage`, no `fetch` of the site's own files, no
    CDN: hosted pages run in a sandbox that blocks them.
 
@@ -43,8 +44,8 @@ No npm install. Never put a key in the repo or the page.
 7. **Make the deploy artifact** with the wallet the builder gave:
    `node scripts/artifact.mjs --owner 0xBuilderWallet`
    Pass the contents of `artifact.json` as `deploy` in EarnKit's `prepare`, with `host: true`.
-   The wallet is the constructor's owner, so `owner()` is the builder from the first block. Public
-   test wallets (anvil, Hardhat) are refused.
+   The wallet is the constructor's owner, so `owner()` is the builder from the first block. The script
+   refuses public test wallets (anvil, Hardhat).
 
 8. **Build the site** with the address from the reply (`deploy.address`):
    `node scripts/make-site.mjs --address 0xJarAddress`
