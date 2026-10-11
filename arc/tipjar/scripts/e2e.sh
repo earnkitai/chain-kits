@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# End to end on a local anvil, no keys: forge test, deploy the jar from artifact.json with the
+# End to end on a local anvil, no keys: forge test, deploy the jar from a test artifact with the
 # builder as owner (the way EarnKit deploys it), one tip, read Tipped and stats(), build site.zip,
-# run EarnKit's deploy and host checks.
+# run EarnKit's deploy and host checks. It never touches your artifact.json, and it removes the
+# local site.zip and site/config.js when done, so only step 8 of BUILD.md makes the real ones.
 #   bash scripts/e2e.sh             # the kit as it is
 #   bash scripts/e2e.sh --twisted   # also requires the twist filled and the kit renamed
 set -euo pipefail
@@ -21,7 +22,7 @@ step "anvil"
 PORT=$(node -e "const s=require('net').createServer().listen(0,'127.0.0.1',()=>{console.log(s.address().port);s.close()})")
 anvil --port "$PORT" --silent > .anvil.log 2>&1 &
 ANVIL=$!
-trap 'kill $ANVIL 2>/dev/null || true' EXIT
+trap 'kill $ANVIL 2>/dev/null || true; rm -f .e2e-artifact.json site.zip site/config.js' EXIT
 RPC="http://127.0.0.1:$PORT"
 for _ in $(seq 1 50); do cast block-number --rpc-url "$RPC" >/dev/null 2>&1 && break; sleep 0.2; done
 cast block-number --rpc-url "$RPC" >/dev/null || fail "anvil didn't start (see .anvil.log)"
@@ -35,9 +36,9 @@ TIPPER=$(echo "$ACCOUNTS" | json 'v[2]')
 cast rpc anvil_setCode "$USDC" "$(json 'v.deployedBytecode.object' < out/MockUsdc.sol/MockUsdc.json)" --rpc-url "$RPC" >/dev/null
 echo "anvil on $PORT, mock USDC at $USDC"
 
-step "deploy from artifact.json (owner = builder $OWNER)"
-node scripts/artifact.mjs --owner "$OWNER"
-INITCODE=$(json '(()=>{const {execFileSync}=require("child_process");const a=v.constructor_args;return v.bytecode+execFileSync("cast",["abi-encode","constructor(address,string,uint256)",a[0],a[1],a[2]]).toString().trim().slice(2)})()' < artifact.json)
+step "deploy from a test artifact (owner = test builder $OWNER)"
+node scripts/artifact.mjs --owner "$OWNER" --test
+INITCODE=$(json '(()=>{const {execFileSync}=require("child_process");const a=v.constructor_args;return v.bytecode+execFileSync("cast",["abi-encode","constructor(address,string,uint256)",a[0],a[1],a[2]]).toString().trim().slice(2)})()' < .e2e-artifact.json)
 RECEIPT=$(cast send --unlocked --from "$DEPLOYER" --rpc-url "$RPC" --json --create "$INITCODE")
 JAR=$(echo "$RECEIPT" | json 'v.contractAddress')
 BLOCK=$(echo "$RECEIPT" | json 'Number(v.blockNumber)')

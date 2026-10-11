@@ -27,8 +27,8 @@ Agents: follow [BUILD.md](BUILD.md).
 | `USDC()`, `MAX_NOTE()` | `0x3600000000000000000000000000000000000000`, 280 |
 
 USDC on Arc is `0x3600000000000000000000000000000000000000` on mainnet and testnet, with 6
-decimals on its ERC-20 interface (the gas token side uses 18). See [../README.md](../README.md)
-for Arc's traps. The jar never touches `msg.value` and never holds funds.
+decimals on its ERC-20 interface (the gas token side uses 18). See the
+[Arc kit](https://github.com/earnkitai/chain-kits/tree/main/arc) for Arc's traps. The jar never touches `msg.value` and never holds funds.
 
 ## The page
 

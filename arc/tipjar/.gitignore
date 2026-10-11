@@ -7,3 +7,4 @@ node_modules/
 site/config.js
 site.zip
 artifact.json
+.e2e-artifact.json
