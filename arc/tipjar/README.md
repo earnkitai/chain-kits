@@ -59,6 +59,10 @@ Keep the key in your shell or `.env` (gitignored), never in a file you commit.
 - The page under the host's exact CSP sandbox (origin `null`) in headless Chromium: totals and
   notes read from anvil; a tip through an injected wallet landed; a wallet that fails to connect
   falls back to the explorer links.
-- Fresh-agent run: see below.
+- Fresh-agent runs (2026-10-11): a new agent session given only BUILD.md, the twist "tips for my
+  podcast listeners" and a wallet went from `degit` to `E2E PASSED` with `--twisted` plus
+  `artifact.json` in about 70 s (run 1) and 64 s (run 2, after fixes from run 1), with no errors
+  in either. Scope: steps 1 to 5 and 7; the GitHub push, EarnKit's deploy and the upload weren't
+  part of it. The bar is 60 minutes.
 
 MIT licensed.
