@@ -6,6 +6,7 @@ get wrong. Each kit covers only that, checked against official docs and run for 
 | Kit | Covers | For |
 |---|---|---|
 | [arc/](arc/) | Deploy + verify a contract on Arc, USDC as gas, the 18 vs 6 decimals trap, fee floor | Arc Microgrants, Circle Developer Grants |
+| [arc/tipjar/](arc/tipjar/) | A USDC tip page on Arc: contract with the owner as a constructor argument, static page, twist slots, EarnKit's deploy and host checks | Arc Microgrants (EarnKit fresh build) |
 | [base/](base/) | Builder Codes (ERC-8021): get one, attach it everywhere, check it | Base Builder Grant Program |
 | [base/campaign/](base/campaign/) | A contract people call directly, Builder Codes on every transaction, entry signing | EarnKit campaigns on Base |
 

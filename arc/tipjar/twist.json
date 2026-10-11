@@ -1,0 +1,9 @@
+{
+  "name": "Tip Jar",
+  "description": "Send a tip in USDC on Arc.",
+  "feature": "Every tip can carry a short note, shown on the page.",
+  "feature_kind": "notes",
+  "goal_usdc": 0,
+  "min_tip_usdc": "0",
+  "wallet_connect": true
+}

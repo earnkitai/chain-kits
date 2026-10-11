@@ -1,0 +1,9 @@
+[profile.default]
+src = "src"
+out = "out"
+solc = "0.8.30"
+# Arc targets the Osaka fork; prague is a safe subset every current solc supports.
+evm_version = "prague"
+
+[lint]
+lint_on_build = false
