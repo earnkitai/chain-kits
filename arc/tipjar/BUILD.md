@@ -14,7 +14,7 @@ No npm install. Never put a key in the repo or the page.
    | `name` | 3 to 40 characters | `LibFund` |
    | `description` | one line, 10 to 160 characters | `Back the library with a USDC tip on Arc.` |
    | `feature` | one sentence, 10 to 160 characters | `A goal bar shows how close the next release fund is.` |
-   | `feature_kind` | `notes` (recent tip notes), `goal` (progress bar) or `none` | `goal` |
+   | `feature_kind` | `notes` (recent notes from tips of 1 USDC or more), `goal` (progress bar) or `none` | `goal` |
    | `goal_usdc` | the goal in USDC when `feature_kind` is `goal`, else 0 | `500` |
    | `min_tip_usdc` | smallest tip in USDC, `"0"` for any amount; the page's smallest button is 1 | `"1"` |
    | `wallet_connect` | keep `true`; `false` shows only "Tip from the explorer" links | `true` |
@@ -35,7 +35,7 @@ No npm install. Never put a key in the repo or the page.
 5. **Prove it:** `bash scripts/e2e.sh --twisted`. It runs `forge test`, deploys on a local anvil with
    a test wallet as owner, tips once, reads `Tipped`, builds `site.zip`, and runs EarnKit's deploy
    and host checks. Fix anything marked FAIL; finish only on `E2E PASSED`. It uses test wallets
-   and deletes its local `site.zip`; your `artifact.json` is untouched.
+   and never touches your `artifact.json`, `site.zip` or `site/config.js`.
 
 6. **Push** to a new public repo under the builder's own GitHub account (not a fork). Add the
    `earnkit.txt` proof line EarnKit gave you and commit it. `.gitignore` already keeps out `.env`,
